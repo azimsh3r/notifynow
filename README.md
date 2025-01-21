@@ -1,7 +1,3 @@
-Here’s a detailed and professional `README.md` template for your project. You can customize it further if needed:
-
----
-
 # **Notification Service with Kafka, Redis, and Spring Boot**
 
 This project implements a notification service as part of a microservices architecture. It leverages **Kafka** for asynchronous messaging, **Redis** for caching templates, and **Spring Boot** for service orchestration. The service ensures efficient delivery of notifications, scalability, and reliability.
@@ -163,9 +159,5 @@ This project is licensed under the MIT License. See `LICENSE` for more details.
 
 ## **Contact**
 For queries or issues, reach out to:
-- **Author**: Azim Sh3r
-- **Email**: azimsh3r@example.com
-
---- 
-
-Let me know if you need any additional changes!
+- **Author**: azimsh3r
+- **Email**: azimjon.works@gmail.com
