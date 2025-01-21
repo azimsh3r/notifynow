@@ -31,11 +31,10 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-security")
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.modelmapper:modelmapper:3.2.2")
-
+    implementation("org.springframework.cloud:spring-cloud-starter-config")
     implementation("com.auth0:java-jwt:4.4.0")
     implementation("org.apache.poi:poi:5.4.0")
     implementation("org.springframework.kafka:spring-kafka")
-    //implementation("org.springframework.cloud:spring-cloud-starter-netflix-eureka-client")
     compileOnly("org.projectlombok:lombok")
     runtimeOnly("org.postgresql:postgresql")
     annotationProcessor("org.projectlombok:lombok")

@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rebalancer-service
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: rebalancer-service
+  template:
+    metadata:
+      labels:
+        app: rebalancer-service
+    spec:
+      containers:
+      - name: rebalancer-service
+        image: azimsh3r/rebalancer-service:latest
+        ports:
+        - containerPort: 8080
+        
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: rebalancer-service
+spec:
+  selector:
+    app: rebalancer-service
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8082

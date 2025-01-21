@@ -9,6 +9,7 @@ import com.azimsh3r.apiservice.model.Template;
 import com.azimsh3r.apiservice.model.User;
 import com.azimsh3r.apiservice.repository.ContactRepository;
 import com.azimsh3r.apiservice.repository.NotificationRepository;
+import com.azimsh3r.apiservice.security.AuthenticationDetails;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class NotificationService {
@@ -26,22 +28,27 @@ public class NotificationService {
     private final ModelMapper modelMapper;
     private final KafkaProducer kafkaProducer;
     private final ContactRepository contactRepository;
+    private final UserService userService;
 
     @Autowired
-    public NotificationService(NotificationRepository notificationRepository, TemplateService templateService, ContactService contactService, ModelMapper modelMapper, KafkaProducer kafkaProducer, ContactRepository contactRepository) {
+    public NotificationService(NotificationRepository notificationRepository, TemplateService templateService, ContactService contactService, ModelMapper modelMapper, KafkaProducer kafkaProducer, ContactRepository contactRepository, UserService userService) {
         this.notificationRepository = notificationRepository;
         this.templateService = templateService;
         this.contactService = contactService;
         this.modelMapper = modelMapper;
         this.kafkaProducer = kafkaProducer;
         this.contactRepository = contactRepository;
+        this.userService = userService;
     }
 
+    //TODO: add validation that user exists using hibernate validator
     @Transactional
-    public void sendNotifications(int templateId, User user) throws JsonProcessingException {
+    public void sendNotifications(int templateId, String username) throws JsonProcessingException {
         Template template = templateService.getTemplateById(templateId);
 
-        List<Contact> contacts = contactService.getContactsByUploadedById(user.getId());
+        Optional<User> user = userService.getUserByUsername(username);
+
+        List<Contact> contacts = contactService.getContactsByUploadedById(user.get().getId());
         List<Notification> notifications = new ArrayList<>();
 
         for (Contact contact : contacts) {

@@ -15,7 +15,7 @@ public class RebalancerScheduler {
         this.rebalancerService = rebalancerService;
     }
 
-    @Scheduled(fixedRate = 300000) // Runs every 5 minutes
+    @Scheduled(fixedRate = 100000)
     public void runRebalancer() throws JsonProcessingException {
         rebalancerService.rebalance();
     }

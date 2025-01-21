@@ -1,7 +1,7 @@
 package com.azimsh3r.apiservice.controller;
 
 import com.azimsh3r.apiservice.dto.NotificationRequestDTO;
-import com.azimsh3r.apiservice.model.User;
+import com.azimsh3r.apiservice.security.AuthenticationDetails;
 import com.azimsh3r.apiservice.service.NotificationService;
 import com.azimsh3r.apiservice.service.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -26,10 +26,10 @@ public class NotificationController {
     }
 
     @PostMapping("/send")
-    public ResponseEntity<String> sendMessages(@RequestBody NotificationRequestDTO notificationRequestDTO, @AuthenticationPrincipal User currentUser) throws JsonProcessingException {
+    public ResponseEntity<String> sendMessages(@RequestBody NotificationRequestDTO notificationRequestDTO, @AuthenticationPrincipal AuthenticationDetails authenticationDetails) throws JsonProcessingException {
         notificationService.sendNotifications(
                 notificationRequestDTO.getTemplateId(),
-                currentUser
+                authenticationDetails.getUsername()
         );
         return ResponseEntity.ok("Notifications are sent successfully!");
     }

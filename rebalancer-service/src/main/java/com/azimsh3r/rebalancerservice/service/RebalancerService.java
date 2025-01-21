@@ -11,7 +11,7 @@ import org.apache.kafka.clients.admin.ListConsumerGroupOffsetsResult;
 import org.apache.kafka.clients.consumer.OffsetAndMetadata;
 import org.apache.kafka.common.TopicPartition;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaAdmin;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
@@ -28,12 +28,12 @@ public class RebalancerService {
     private final ModelMapper modelMapper;
     private final ObjectMapper jacksonObjectMapper;
 
-    @Value("${kafka.topic.notification-requests}")
-    private String notificationRequestsTopic;
-
+    @Autowired
     public RebalancerService(KafkaTemplate<String, String> kafkaTemplate,
                              NotificationRepository notificationRepository,
-                             KafkaAdmin kafkaAdmin, ModelMapper modelMapper, ObjectMapper jacksonObjectMapper) {
+                             KafkaAdmin kafkaAdmin,
+                             ModelMapper modelMapper,
+                             ObjectMapper jacksonObjectMapper) {
         this.kafkaTemplate = kafkaTemplate;
         this.notificationRepository = notificationRepository;
         this.adminClient = AdminClient.create(kafkaAdmin.getConfigurationProperties());
@@ -50,9 +50,11 @@ public class RebalancerService {
             Contact contact = notification.getReceiver();
             ContactDTO contactDTO = modelMapper.map(contact, ContactDTO.class);
 
+            contactDTO.setTemplateId(notification.getTemplate().getId());
+
             String message = jacksonObjectMapper.writeValueAsString(contactDTO);
 
-            kafkaTemplate.send(notificationRequestsTopic, message);
+            kafkaTemplate.send("contacts-topic", message);
         }
     }
 

@@ -1,6 +1,7 @@
 package com.azimsh3r.apiservice.model;
 
 import com.azimsh3r.apiservice.enums.UserStatus;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -25,6 +26,7 @@ public class User {
     @Column(name="password")
     private String password;
 
+    @JsonIgnore
     @Column(name="role")
     private String role;
 
@@ -35,15 +37,19 @@ public class User {
     @Column(name="status")
     private UserStatus status;
 
+    @JsonIgnore
     @Column(name="created_at")
     private LocalDateTime created_at;
 
+    @JsonIgnore
     @Column(name="updated_at")
     private LocalDateTime updated_at;
 
     @OneToMany(mappedBy = "author", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<Template> templates;
 
     @OneToMany(mappedBy = "uploadedBy", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<Contact> contacts;
 }

@@ -1,6 +1,6 @@
 package com.azimsh3r.rebalancerservice.model;
 
-import com.azimsh3r.apiservice.enums.UserStatus;
+import com.azimsh3r.rebalancerservice.enums.UserStatus;
 import jakarta.persistence.*;
 import lombok.Data;
 
